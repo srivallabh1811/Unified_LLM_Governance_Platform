@@ -77,3 +77,17 @@ labeled set for measuring judge accuracy across the eval harness.
 
 If this looks right, next step is SQLAlchemy models mirroring this DDL plus
 the first Alembic migration.
+
+## Sprint 2 additions (implemented in the SQLAlchemy models / migration 0001)
+
+- `model_endpoints.version_label` — human version tag so red-team runs can be compared
+  across model updates (regression tracking).
+- `jobs.error` — failure message for `failed` jobs.
+- `test_cases.attack_succeeded`, `test_cases.detector_notes` — red-team detector verdict.
+- `fingerprint_signatures` — the deferred Signature table: per-probe embeddings (JSONB),
+  normalised centroid (pgvector, dimension set by the encoder, e.g. 384 for
+  `all-MiniLM-L6-v2`), probe-set version, embedder name, stylometrics.
+- `fingerprint_comparisons` — audit trail for every clone-detection comparison.
+- Open question #3 resolved provisionally: the four attack categories are
+  `prompt_injection`, `jailbreak_roleplay`, `system_prompt_extraction`, `obfuscation`
+  (a Python enum; `attack_type` stays TEXT in the DB).
